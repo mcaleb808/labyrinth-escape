@@ -1,31 +1,31 @@
 import findShortestPath from "@/lib/labyrinthEscape";
 
-describe('Labyrinth Escape', () => {
-  it('should return the shortest path length from S to E', () => {
+describe("Labyrinth Escape", () => {
+  it("should return the shortest path length from S to E", () => {
     const labyrinth = [
-      ['S', '0', '1', '0', 'E'],
-      ['1', '0', '1', '0', '1'],
-      ['1', '0', '0', '0', '0'],
-      ['0', '0', '1', '1', '1'],
-      ['0', '0', '0', '0', '0'],
+      ["S", "0", "1", "0", "E"],
+      ["1", "0", "1", "0", "1"],
+      ["1", "0", "0", "0", "0"],
+      ["0", "0", "1", "1", "1"],
+      ["0", "0", "0", "0", "0"],
     ];
 
     const result = findShortestPath(labyrinth);
 
-    expect(result).toBe(8);
+    expect(result?.length).toBe(8);
   });
 
-  it('should return -1 if there is no path from S to E', () => {
+  it("should return -1 if there is no path from S to E", () => {
     const labyrinth = [
-      ['S', '1', '1', '1', 'E'],
-      ['1', '1', '1', '1', '1'],
-      ['1', '1', '1', '1', '1'],
-      ['1', '1', '1', '1', '1'],
-      ['1', '1', '1', '1', '1'],
+      ["S", "1", "1", "1", "E"],
+      ["1", "1", "1", "1", "1"],
+      ["1", "1", "1", "1", "1"],
+      ["1", "1", "1", "1", "1"],
+      ["1", "1", "1", "1", "1"],
     ];
 
     const result = findShortestPath(labyrinth);
 
-    expect(result).toBe(-1);
+    expect(result?.length).toBe(-1);
   });
 });

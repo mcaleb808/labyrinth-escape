@@ -19,11 +19,8 @@ export async function POST(req: NextRequest) {
   }
 
   try {
-    const shortestPathLength = findShortestPath(labyrinth);
-    return NextResponse.json(
-      { shortestPath: shortestPathLength },
-      { status: 200 }
-    );
+    const { length, path } = findShortestPath(labyrinth);
+    return NextResponse.json({ length, path }, { status: 200 });
   } catch (error) {
     return NextResponse.json(
       { error: "Internal Server Error" },

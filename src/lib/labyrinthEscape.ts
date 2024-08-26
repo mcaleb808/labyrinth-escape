@@ -1,4 +1,9 @@
-const findShortestPath = (labyrinth: string[][]): number => {
+const findShortestPath = (
+  labyrinth: string[][]
+): {
+  length: number;
+  path: [number, number][];
+} => {
   const directions = [
     [0, 1], // right
     [1, 0], // down
@@ -8,7 +13,7 @@ const findShortestPath = (labyrinth: string[][]): number => {
 
   const rows = labyrinth.length;
   const cols = labyrinth[0].length;
-  const queue: [number, number, number][] = []; // [row, col, distance]
+  const queue: [number, number, number, [number, number][]][] = []; // [row, col, distance, path]
 
   let startRow = 0,
     startCol = 0;
@@ -19,7 +24,7 @@ const findShortestPath = (labyrinth: string[][]): number => {
       if (labyrinth[i][j] === "S") {
         startRow = i;
         startCol = j;
-        queue.push([i, j, 0]);
+        queue.push([i, j, 0, [[i, j]]]); // Initialize path with the start position
         break;
       }
     }
@@ -29,7 +34,7 @@ const findShortestPath = (labyrinth: string[][]): number => {
   visited[startRow][startCol] = true;
 
   while (queue.length > 0) {
-    const [currentRow, currentCol, distance] = queue.shift()!;
+    const [currentRow, currentCol, distance, path] = queue.shift()!;
 
     for (const [dx, dy] of directions) {
       const newRow = currentRow + dx;
@@ -43,18 +48,23 @@ const findShortestPath = (labyrinth: string[][]): number => {
         !visited[newRow][newCol]
       ) {
         if (labyrinth[newRow][newCol] === "E") {
-          return distance + 1;
+          return { length: distance + 1, path: [...path, [newRow, newCol]] };
         }
 
         if (labyrinth[newRow][newCol] === "0") {
-          queue.push([newRow, newCol, distance + 1]);
+          queue.push([
+            newRow,
+            newCol,
+            distance + 1,
+            [...path, [newRow, newCol]],
+          ]);
           visited[newRow][newCol] = true;
         }
       }
     }
   }
 
-  return -1;
+  return { length: -1, path: [] }; // Return -1 and an empty path if no path exists
 };
 
 export default findShortestPath;
