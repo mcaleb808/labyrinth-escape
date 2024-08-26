@@ -11,8 +11,17 @@ const findShortestPath = (labyrinth: string[][]): number => {
   const queue: [number, number, number][] = []; // [row, col, distance]
 
   let startRow = 0, startCol = 0;
-
-  // Basic structure without logic yet
+  // Find the start position
+  for (let i = 0; i < rows; i++) {
+    for (let j = 0; j < cols; j++) {
+      if (labyrinth[i][j] === 'S') {
+        startRow = i;
+        startCol = j;
+        queue.push([i, j, 0]);
+        break;
+      }
+    }
+  }
   return -1; 
 }
 
