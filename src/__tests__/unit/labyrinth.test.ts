@@ -1,4 +1,4 @@
-// import { findShortestPath } from '../lib/labyrinthEscape';
+import findShortestPath from "@/lib/labyrinthEscape";
 
 describe('Labyrinth Escape', () => {
   it('should return the shortest path length from S to E', () => {
@@ -10,9 +10,9 @@ describe('Labyrinth Escape', () => {
       ['0', '0', '0', '0', '0'],
     ];
 
-    // const result = findShortestPath(labyrinth);
+    const result = findShortestPath(labyrinth);
 
-    expect(8).toBe(8);
+    expect(result).toBe(8);
   });
 
   it('should return -1 if there is no path from S to E', () => {
@@ -24,8 +24,8 @@ describe('Labyrinth Escape', () => {
       ['1', '1', '1', '1', '1'],
     ];
 
-    // const result = findShortestPath(labyrinth);
+    const result = findShortestPath(labyrinth);
 
-    expect(-1).toBe(-1);
+    expect(result).toBe(-1);
   });
 });
