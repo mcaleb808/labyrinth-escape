@@ -4,26 +4,24 @@
 
 import { POST } from "@/app/api/escape/route";
 
-
-describe('POST /api/escape', () => {
-  it('should return the shortest path with status 200', async () => {
+describe("POST /api/escape", () => {
+  it("should return the shortest path with status 200", async () => {
     // Mock the request object
     const requestObj = {
       json: async () => ({
         labyrinth: [
-          ['S', '0', '1', '0', 'E'],
-          ['1', '0', '1', '0', '1'],
-          ['1', '0', '0', '0', '0'],
-          ['0', '0', '1', '1', '1'],
-          ['0', '0', '0', '0', '0'],
+          ["S", "0", "1", "0", "E"],
+          ["1", "0", "1", "0", "1"],
+          ["1", "0", "0", "0", "0"],
+          ["0", "0", "1", "1", "1"],
+          ["0", "0", "0", "0", "0"],
         ],
       }),
-      method: 'POST',
+      method: "POST",
     } as any;
 
     // Call the POST function
-      const response = await POST(requestObj);
-      console.log(response, 'response');
+    const response = await POST(requestObj);
     const body = await response.json();
 
     // Assertions
@@ -31,13 +29,13 @@ describe('POST /api/escape', () => {
     expect(body.shortestPath).toBe(8);
   });
 
-  it('should return status 400 for invalid input', async () => {
+  it("should return status 400 for invalid input", async () => {
     // Mock the request object with invalid data
     const requestObj = {
       json: async () => ({
         labyrinth: null,
       }),
-      method: 'POST',
+      method: "POST",
     } as any;
 
     // Call the POST function
@@ -46,21 +44,21 @@ describe('POST /api/escape', () => {
 
     // Assertions
     expect(response.status).toBe(400);
-    expect(body.error).toBe('Invalid input');
+    expect(body.error).toBe("Invalid input");
   });
 
-  it('should return status 405 for unsupported HTTP methods', async () => {
+  it("should return status 405 for unsupported HTTP methods", async () => {
     // Mock the request object with unsupported method
     const requestObj = {
-      method: 'GET',
+      method: "GET",
     } as any;
 
     // Call the POST function
     const response = await POST(requestObj);
-    const body = await response.text();
+    const body = await response.json();
 
     // Assertions
     expect(response.status).toBe(405);
-    expect(body).toBe('Method GET Not Allowed');
+    expect(body.error).toBe("Method GET Not Allowed");
   });
 });
