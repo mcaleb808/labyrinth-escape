@@ -33,3 +33,16 @@ export const handlePositionChange = (
   resetPreviousPosition(updatedLabyrinth, position);
   setPosition([rowIndex, colIndex]);
 };
+
+export const isEdgeCell = (
+  labyrinth: string[][],
+  rowIndex: number,
+  colIndex: number
+) => {
+  return (
+    rowIndex === 0 ||
+    rowIndex === labyrinth.length - 1 ||
+    colIndex === 0 ||
+    colIndex === labyrinth[0].length - 1
+  );
+};
