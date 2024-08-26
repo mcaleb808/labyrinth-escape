@@ -25,6 +25,6 @@ jobs:
     needs: [test]
     runs-on: ubuntu-latest
     steps:
-      - uses: paambaati/codeclimate-action@v2.2.4
+      - uses: paambaati/codeclimate-action@v3.1.1
         env:
           CC_TEST_REPORTER_ID: ${{ secrets.CC_TEST_REPORTER_ID }}
