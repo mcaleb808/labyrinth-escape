@@ -4,15 +4,10 @@
 import { useState } from 'react';
 import LabyrinthGrid from '@/components/LabyrinthGrid';
 import ControlPanel from '@/components/ControlPanel';
+import { updateLabyrinth, handlePositionChange } from '@/lib/helpers';
+import { initialLabyrinth } from '@/lib/constants';
 
 export default function Home() {
-  const initialLabyrinth = [
-    ['S', '0', '1', '0', 'E'],
-    ['1', '0', '1', '0', '1'],
-    ['1', '0', '0', '0', '0'],
-    ['0', '0', '1', '1', '1'],
-    ['0', '0', '0', '0', '0'],
-  ];
 
   const [labyrinth, setLabyrinth] = useState<string[][]>(initialLabyrinth);
   const [result, setResult] = useState<number | null>(null);
@@ -22,36 +17,24 @@ export default function Home() {
 
   const handleInputChange = (rowIndex: number, colIndex: number, value: string) => {
     path.length && setPath([]);
-    let updatedLabyrinth = labyrinth.map((row, rIdx) =>
-      row.map((cell, cIdx) => (rIdx === rowIndex && cIdx === colIndex ? value : cell))
-    );
+    let updatedLabyrinth = updateLabyrinth(labyrinth, rowIndex, colIndex, value);
 
-    if (value === "S") {
-      if (startPos) {
-        const [prevRow, prevCol] = startPos;
-        updatedLabyrinth[prevRow][prevCol] = "0";
-      }
-      setStartPos([rowIndex, colIndex]);
+    if (value === 'S') {
+      handlePositionChange(rowIndex, colIndex, updatedLabyrinth, startPos, setStartPos);
+    } else if (value === 'E') {
+      handlePositionChange(rowIndex, colIndex, updatedLabyrinth, endPos, setEndPos);
+    }
 
-      if (labyrinth[rowIndex][colIndex] === "E") {
-        updatedLabyrinth[rowIndex][colIndex] = "S";
-        const [prevRow, prevCol] = startPos;
-        updatedLabyrinth[prevRow][prevCol] = "E";
-        setEndPos([prevRow, prevCol]);
-      }
-    } else if (value === "E") {
-      if (endPos) {
-        const [prevRow, prevCol] = endPos;
-        updatedLabyrinth[prevRow][prevCol] = "0";
-      }
-      setEndPos([rowIndex, colIndex]);
-
-      if (labyrinth[rowIndex][colIndex] === "S") {
-        updatedLabyrinth[rowIndex][colIndex] = "E";
-        const [prevRow, prevCol] = endPos;
-        updatedLabyrinth[prevRow][prevCol] = "S";
-        setStartPos([prevRow, prevCol]);
-      }
+    if (labyrinth[rowIndex][colIndex] === 'E' && value === 'S') {
+      updatedLabyrinth[rowIndex][colIndex] = 'S';
+      const [prevRow, prevCol] = startPos;
+      updatedLabyrinth[prevRow][prevCol] = 'E';
+      setEndPos([prevRow, prevCol]);
+    } else if (labyrinth[rowIndex][colIndex] === 'S' && value === 'E') {
+      updatedLabyrinth[rowIndex][colIndex] = 'E';
+      const [prevRow, prevCol] = endPos;
+      updatedLabyrinth[prevRow][prevCol] = 'S';
+      setStartPos([prevRow, prevCol]);
     }
 
     setLabyrinth(updatedLabyrinth);
