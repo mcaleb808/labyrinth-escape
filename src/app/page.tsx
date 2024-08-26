@@ -18,6 +18,7 @@ export default function Home() {
   const [endPos, setEndPos] = useState<[number, number]>([0, 4]);
 
   const handleInputChange = (rowIndex: number, colIndex: number, value: string) => {
+    path.length && setPath([]);
     let updatedLabyrinth = labyrinth.map((row, rIdx) =>
       row.map((cell, cIdx) => (rIdx === rowIndex && cIdx === colIndex ? value : cell))
     );
