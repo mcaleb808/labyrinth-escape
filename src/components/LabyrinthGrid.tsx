@@ -1,6 +1,7 @@
 // components/LabyrinthGrid.tsx
 "use client";
 
+import { isEdgeCell } from '@/lib/helpers';
 import { FC } from 'react';
 
 interface LabyrinthGridProps {
@@ -10,6 +11,7 @@ interface LabyrinthGridProps {
 }
 
 const LabyrinthGrid: FC<LabyrinthGridProps> = ({ labyrinth, onInputChange, isInPath }) => {
+
   return (
     <div className="grid grid-cols-5 gap-2">
       {labyrinth.map((row, rowIndex) =>
@@ -25,8 +27,12 @@ const LabyrinthGrid: FC<LabyrinthGridProps> = ({ labyrinth, onInputChange, isInP
             >
               <option value="0">0</option>
               <option value="1">1</option>
-              <option value="S">S</option>
-              <option value="E">E</option>
+              {isEdgeCell(labyrinth, rowIndex, colIndex) && (
+                <>
+                  <option value="S">S</option>
+                  <option value="E">E</option>
+                </>
+              )}
             </select>
           );
         })
