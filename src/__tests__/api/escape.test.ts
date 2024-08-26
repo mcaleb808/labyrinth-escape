@@ -26,7 +26,7 @@ describe("POST /api/escape", () => {
 
     // Assertions
     expect(response.status).toBe(200);
-    expect(body.shortestPath).toBe(8);
+    expect(body.length).toBe(8);
   });
 
   it("should return status 400 for invalid input", async () => {
