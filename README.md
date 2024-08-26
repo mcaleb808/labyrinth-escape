@@ -1,6 +1,9 @@
 # Labyrinth Escape
 
 ![CI](https://github.com/mcaleb808/labyrinth-escape/actions/workflows/ci.yml/badge.svg)
+[![Maintainability](https://api.codeclimate.com/v1/badges/ca926c3c6610e26b7aec/maintainability)](https://codeclimate.com/github/mcaleb808/labyrinth-escape/maintainability)
+[![Test Coverage](https://api.codeclimate.com/v1/badges/ca926c3c6610e26b7aec/test_coverage)](https://codeclimate.com/github/mcaleb808/labyrinth-escape/test_coverage)
+
 
 A simple Labyrinth Escape game implemented using Next.js and TypeScript.
 
