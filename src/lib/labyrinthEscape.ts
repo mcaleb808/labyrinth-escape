@@ -10,12 +10,13 @@ const findShortestPath = (labyrinth: string[][]): number => {
   const cols = labyrinth[0].length;
   const queue: [number, number, number][] = []; // [row, col, distance]
 
-  let startRow = 0, startCol = 0;
+  let startRow = 0,
+    startCol = 0;
 
   // Find the start position
   for (let i = 0; i < rows; i++) {
     for (let j = 0; j < cols; j++) {
-      if (labyrinth[i][j] === 'S') {
+      if (labyrinth[i][j] === "S") {
         startRow = i;
         startCol = j;
         queue.push([i, j, 0]);
@@ -35,15 +36,17 @@ const findShortestPath = (labyrinth: string[][]): number => {
       const newCol = currentCol + dy;
 
       if (
-        newRow >= 0 && newRow < rows &&
-        newCol >= 0 && newCol < cols &&
+        newRow >= 0 &&
+        newRow < rows &&
+        newCol >= 0 &&
+        newCol < cols &&
         !visited[newRow][newCol]
       ) {
-        if (labyrinth[newRow][newCol] === 'E') {
+        if (labyrinth[newRow][newCol] === "E") {
           return distance + 1;
         }
 
-        if (labyrinth[newRow][newCol] === '0') {
+        if (labyrinth[newRow][newCol] === "0") {
           queue.push([newRow, newCol, distance + 1]);
           visited[newRow][newCol] = true;
         }
@@ -52,6 +55,6 @@ const findShortestPath = (labyrinth: string[][]): number => {
   }
 
   return -1;
-}
+};
 
 export default findShortestPath;
