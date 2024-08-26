@@ -31,8 +31,7 @@ jobs:
           node-version: '18'
       - run: npm ci
       - run: npm run build
-      - uses: paambaati/codeclimate-action@v2.2.4
+      - run: npm install -g codeclimate-test-reporter
+      - run: codeclimate-test-reporter < coverage/lcov.info
         env:
           CC_TEST_REPORTER_ID: ${{ secrets.CC_TEST_REPORTER_ID }}
-        with:
-          coverageCommand: npm run coverage
