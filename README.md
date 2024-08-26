@@ -1,5 +1,7 @@
 # Labyrinth Escape
 
+![CI](https://github.com/mcaleb808/labyrinth-escape/actions/workflows/ci.yml/badge.svg)
+
 A simple Labyrinth Escape game implemented using Next.js and TypeScript.
 
 ## Project Setup
