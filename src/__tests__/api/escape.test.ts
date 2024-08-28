@@ -3,34 +3,25 @@
  */
 
 import { POST } from "@/app/api/escape/route";
+import { initialLabyrinth } from "@/lib/constants";
 
 describe("POST /api/escape", () => {
   it("should return the shortest path with status 200", async () => {
-    // Mock the request object
     const requestObj = {
       json: async () => ({
-        labyrinth: [
-          ["S", "0", "1", "0", "E"],
-          ["1", "0", "1", "0", "1"],
-          ["1", "0", "0", "0", "0"],
-          ["0", "0", "1", "1", "1"],
-          ["0", "0", "0", "0", "0"],
-        ],
+        labyrinth: initialLabyrinth,
       }),
       method: "POST",
     } as any;
 
-    // Call the POST function
     const response = await POST(requestObj);
     const body = await response.json();
 
-    // Assertions
     expect(response.status).toBe(200);
     expect(body.length).toBe(8);
   });
 
   it("should return status 400 for invalid input", async () => {
-    // Mock the request object with invalid data
     const requestObj = {
       json: async () => ({
         labyrinth: null,
@@ -38,27 +29,35 @@ describe("POST /api/escape", () => {
       method: "POST",
     } as any;
 
-    // Call the POST function
     const response = await POST(requestObj);
     const body = await response.json();
 
-    // Assertions
     expect(response.status).toBe(400);
     expect(body.error).toBe("Invalid input");
   });
 
   it("should return status 405 for unsupported HTTP methods", async () => {
-    // Mock the request object with unsupported method
     const requestObj = {
       method: "GET",
     } as any;
 
-    // Call the POST function
     const response = await POST(requestObj);
     const body = await response.json();
 
-    // Assertions
     expect(response.status).toBe(405);
     expect(body.error).toBe("Method GET Not Allowed");
+  });
+
+  it("should return status 500 when a starting point is not provided", async () => {
+    const requestObj = {
+      json: async () => ({
+        labyrinth: [],
+      }),
+      method: "POST",
+    } as any;
+
+    const response = await POST(requestObj);
+
+    expect(response.status).toBe(500);
   });
 });
