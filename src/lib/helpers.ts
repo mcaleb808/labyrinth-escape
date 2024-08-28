@@ -1,11 +1,12 @@
 // lib/helpers.ts
+import { Labyrinth, Position, SetPosition } from "./types";
 
 export const updateLabyrinth = (
-  labyrinth: string[][],
+  labyrinth: Labyrinth,
   rowIndex: number,
   colIndex: number,
   value: string
-): string[][] => {
+): Labyrinth => {
   return labyrinth.map((row, rIdx) =>
     row.map((cell, cIdx) =>
       rIdx === rowIndex && cIdx === colIndex ? value : cell
@@ -14,8 +15,8 @@ export const updateLabyrinth = (
 };
 
 export const resetPreviousPosition = (
-  updatedLabyrinth: string[][],
-  position: [number, number] | null
+  updatedLabyrinth: Labyrinth,
+  position: Position
 ) => {
   if (position) {
     const [prevRow, prevCol] = position;
@@ -26,16 +27,16 @@ export const resetPreviousPosition = (
 export const handlePositionChange = (
   rowIndex: number,
   colIndex: number,
-  updatedLabyrinth: string[][],
-  position: [number, number] | null,
-  setPosition: (pos: [number, number]) => void
+  updatedLabyrinth: Labyrinth,
+  position: Position,
+  setPosition: SetPosition
 ) => {
   resetPreviousPosition(updatedLabyrinth, position);
   setPosition([rowIndex, colIndex]);
 };
 
 export const isEdgeCell = (
-  labyrinth: string[][],
+  labyrinth: Labyrinth,
   rowIndex: number,
   colIndex: number
 ) => {
@@ -47,11 +48,11 @@ export const isEdgeCell = (
   );
 };
 
-export const findStartPosition = (labyrinth: string[][]) => {
+export const findStartPosition = (labyrinth: Labyrinth): [number, number] => {
   for (let i = 0; i < labyrinth.length; i++) {
     for (let j = 0; j < labyrinth[0].length; j++) {
       if (labyrinth[i][j] === "S") {
-        return [i, j] as [number, number];
+        return [i, j];
       }
     }
   }
