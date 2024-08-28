@@ -1,37 +1,22 @@
+import { directions } from "./constants";
+import { findStartPosition } from "./helpers";
+
 const findShortestPath = (
   labyrinth: string[][]
 ): {
   length: number;
   path: [number, number][];
 } => {
-  const directions = [
-    [0, 1], // right
-    [1, 0], // down
-    [0, -1], // left
-    [-1, 0], // up
-  ];
+  const [startRow, startCol] = findStartPosition(labyrinth);
 
   const rows = labyrinth.length;
   const cols = labyrinth[0].length;
   const queue: [number, number, number, [number, number][]][] = []; // [row, col, distance, path]
 
-  let startRow = 0,
-    startCol = 0;
-
-  // Find the start position
-  for (let i = 0; i < rows; i++) {
-    for (let j = 0; j < cols; j++) {
-      if (labyrinth[i][j] === "S") {
-        startRow = i;
-        startCol = j;
-        queue.push([i, j, 0, [[i, j]]]); // Initialize path with the start position
-        break;
-      }
-    }
-  }
-
   const visited = Array.from({ length: rows }, () => Array(cols).fill(false));
   visited[startRow][startCol] = true;
+
+  queue.push([startRow, startCol, 0, [[startRow, startCol]]]);
 
   while (queue.length > 0) {
     const [currentRow, currentCol, distance, path] = queue.shift()!;

@@ -46,3 +46,14 @@ export const isEdgeCell = (
     colIndex === labyrinth[0].length - 1
   );
 };
+
+export const findStartPosition = (labyrinth: string[][]) => {
+  for (let i = 0; i < labyrinth.length; i++) {
+    for (let j = 0; j < labyrinth[0].length; j++) {
+      if (labyrinth[i][j] === "S") {
+        return [i, j] as [number, number];
+      }
+    }
+  }
+  throw new Error("Start position 'S' not found in the labyrinth.");
+};
