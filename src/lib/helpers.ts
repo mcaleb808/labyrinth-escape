@@ -23,14 +23,21 @@ export const resetPreviousPosition = (
     updatedLabyrinth[prevRow][prevCol] = "0";
   }
 };
+interface PositionChangeParams {
+  rowIndex: number;
+  colIndex: number;
+  updatedLabyrinth: Labyrinth;
+  position: Position;
+  setPosition: SetPosition;
+}
 
-export const handlePositionChange = (
-  rowIndex: number,
-  colIndex: number,
-  updatedLabyrinth: Labyrinth,
-  position: Position,
-  setPosition: SetPosition
-) => {
+export const handlePositionChange = ({
+  rowIndex,
+  colIndex,
+  updatedLabyrinth,
+  position,
+  setPosition,
+}: PositionChangeParams) => {
   resetPreviousPosition(updatedLabyrinth, position);
   setPosition([rowIndex, colIndex]);
 };
@@ -46,6 +53,31 @@ export const isEdgeCell = (
     colIndex === 0 ||
     colIndex === labyrinth[0].length - 1
   );
+};
+
+interface SwitchParams {
+  currentValue: string;
+  newValue: string;
+  setNewState: SetPosition;
+  position: [number, number];
+  rowIndex: number;
+  colIndex: number;
+  updatedLabyrinth: Labyrinth;
+}
+
+export const switchEndWithStart = ({
+  currentValue,
+  newValue,
+  setNewState,
+  position,
+  rowIndex,
+  colIndex,
+  updatedLabyrinth,
+}: SwitchParams): void => {
+  updatedLabyrinth[rowIndex][colIndex] = newValue;
+  const [prevRow, prevCol] = position;
+  updatedLabyrinth[prevRow][prevCol] = currentValue;
+  setNewState([prevRow, prevCol]);
 };
 
 export const findStartPosition = (labyrinth: Labyrinth): [number, number] => {

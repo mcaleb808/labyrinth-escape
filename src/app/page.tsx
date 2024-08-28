@@ -1,10 +1,9 @@
-// app/page.tsx
 "use client";
 
 import { useState } from 'react';
 import LabyrinthGrid from '@/components/LabyrinthGrid';
 import ControlPanel from '@/components/ControlPanel';
-import { updateLabyrinth, handlePositionChange } from '@/lib/helpers';
+import { updateLabyrinth, handlePositionChange, switchEndWithStart } from '@/lib/helpers';
 import { initialLabyrinth } from '@/lib/constants';
 
 export default function Home() {
@@ -16,29 +15,36 @@ export default function Home() {
   const [endPos, setEndPos] = useState<[number, number]>([0, 4]);
 
   const handleInputChange = (rowIndex: number, colIndex: number, value: string) => {
-    path.length && setPath([]);
-    let updatedLabyrinth = updateLabyrinth(labyrinth, rowIndex, colIndex, value);
+  path.length && setPath([]);
+  const updatedLabyrinth = updateLabyrinth(labyrinth, rowIndex, colIndex, value);
 
-    if (value === 'S') {
-      handlePositionChange(rowIndex, colIndex, updatedLabyrinth, startPos, setStartPos);
-    } else if (value === 'E') {
-      handlePositionChange(rowIndex, colIndex, updatedLabyrinth, endPos, setEndPos);
-    }
+  const sharedParams = {rowIndex, colIndex, updatedLabyrinth};
 
-    if (labyrinth[rowIndex][colIndex] === 'E' && value === 'S') {
-      updatedLabyrinth[rowIndex][colIndex] = 'S';
-      const [prevRow, prevCol] = startPos;
-      updatedLabyrinth[prevRow][prevCol] = 'E';
-      setEndPos([prevRow, prevCol]);
-    } else if (labyrinth[rowIndex][colIndex] === 'S' && value === 'E') {
-      updatedLabyrinth[rowIndex][colIndex] = 'E';
-      const [prevRow, prevCol] = endPos;
-      updatedLabyrinth[prevRow][prevCol] = 'S';
-      setStartPos([prevRow, prevCol]);
-    }
+  if (value === 'S') {
+    handlePositionChange({...sharedParams, position: startPos, setPosition: setStartPos});
+  } else if (value === 'E') {
+    handlePositionChange({...sharedParams, position: endPos, setPosition: setEndPos});
+  }
 
-    setLabyrinth(updatedLabyrinth);
-  };
+  if (labyrinth[rowIndex][colIndex] === 'E' && value === 'S') {
+    switchEndWithStart({
+      ...sharedParams,
+      currentValue: 'E',
+      newValue: 'S',
+      setNewState: setEndPos,
+      position: startPos,
+    });
+  } else if (labyrinth[rowIndex][colIndex] === 'S' && value === 'E') {
+    switchEndWithStart({
+      ...sharedParams,
+      currentValue: 'S',
+      newValue: 'E',
+      setNewState: setStartPos,
+      position: endPos,
+    });
+  }
+  setLabyrinth(updatedLabyrinth);
+};
 
   const handleSubmit = async () => {
     const response = await fetch('/api/escape', {
